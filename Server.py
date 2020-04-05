@@ -2,7 +2,8 @@
 ### color = 2 : black
 import os
 import json
-import sys
+import sys , time
+from tqdm import tqdm
 
 class Cell:
     def __init__(self, row: int, col: int):
@@ -40,7 +41,7 @@ def write_now_json(board : [] , c1 : str , c2 : str):
     board_dict['color'] = 2
     with open(c2 + 'now_board.json', 'w') as outfile2:
         json.dump(board_dict, outfile2)
-    print('done writing')
+    #print('done writing')
 
 def write_log_json(board_dict: {}):
     with open('log.json' , 'w') as outfile:
@@ -232,6 +233,7 @@ def run():
     ###
     data_dict = {}
     data_dict['turn0'] = copy_board(now_board)
+    progress_bar_list = tqdm(range(60))
     for turn in range(1, 1000):
         print('server: '+'turn : ' , turn)
         if turn%2 == 1:
@@ -257,7 +259,9 @@ def run():
             col = int(coordinate2[1])
         available = available_cells(now_board, color, Cell(row,col))
         if available.__contains__(Cell(row, col)):
-            print('server: '+'correct choice')
+            time.sleep(0.1)
+            progress_bar_list.update()
+            #print('server: '+'correct choice')
             # for b in now_board:
             #     print(b)
         else:
@@ -268,6 +272,7 @@ def run():
         if is_finished(now_board, available):
             break
 
+    progress_bar_list.close()
     write_log_json(data_dict)
     for b in now_board:
         print(b)
@@ -277,4 +282,4 @@ def run():
 if __name__ == '__main__':
     print(dirname)
     run()
-    e = input('enter any key to exit')
+    e = input('press Enter to exit ')
