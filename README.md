@@ -1,4 +1,4 @@
-# OTHELLO_challeng
+# OTHELLO_challenge
 
 # build
 you should install minGW on your system and add PATH to environment variable
